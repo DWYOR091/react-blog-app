@@ -1,0 +1,25 @@
+html,
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  margin: 0 15px 0 15px;
+}
+
+nav {
+  background-color: aliceblue;
+  padding: 15px;
+}
+
+nav a {
+  color: black;
+  margin: 0 10px 0 10px;
+  font-weight: bold;
+}
+
+nav a.active {
+  color: blue;
+}

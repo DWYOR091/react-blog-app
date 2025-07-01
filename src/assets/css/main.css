@@ -4,10 +4,10 @@ html,
   padding: 0;
   box-sizing: border-box;
 }
-
+/* 
 .container {
   margin: 0 15px 0 15px;
-}
+} */
 
 nav {
   background-color: aliceblue;

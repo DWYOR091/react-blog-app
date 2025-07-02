@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import moment from "moment";
+import { Slide, toast } from "react-toastify";
 
 const CategoryList = () => {
   const navigate = useNavigate();
@@ -12,25 +13,45 @@ const CategoryList = () => {
   const [search, setSearch] = useState("");
   const size = 5;
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        setLoading(true);
-        const res = await axiosInstance.get(
-          `category?q=${search}&page=${currentPage}&size=${size}`
-        );
-        const data = res.data.data;
+  const fetchCategories = useCallback(async () => {
+    try {
+      setLoading(true);
+      const res = await axiosInstance.get(
+        `category?q=${search}&page=${currentPage}&size=${size}`
+      );
+      const data = res.data.data;
 
-        setDatas(data.categories);
-        setTotalPage(data.pages);
-        setLoading(false);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchCategories();
+      setDatas(data.categories);
+      setTotalPage(data.pages);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
   }, [currentPage, search]);
+
+  const handleDeleteCategory = async (id) => {
+    try {
+      const res = await axiosInstance.delete(`category/${id}`);
+      toast.success(res.data.message, {
+        position: "top-right",
+        autoClose: 2000,
+        theme: "light",
+        transition: Slide,
+      });
+      fetchCategories();
+    } catch (error) {
+      toast.success(error.response.data.message, {
+        position: "top-right",
+        autoClose: 2000,
+        theme: "light",
+        transition: Slide,
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
@@ -100,7 +121,12 @@ const CategoryList = () => {
                     >
                       Edit
                     </button>
-                    <button className="btn btn-danger">Delete</button>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => handleDeleteCategory(data._id)}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}

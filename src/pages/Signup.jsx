@@ -1,6 +1,8 @@
 import { useState } from "react";
 import signupValidator from "../validators/signupValidator";
-import axios from "axios";
+import axios from "../utils/axiosInstance";
+import { Slide, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const initialForm = {
   name: "",
@@ -20,6 +22,7 @@ const Signup = () => {
   const [form, setForm] = useState(initialForm);
   const [error, setError] = useState(initialErrorForm);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm((oldData) => {
@@ -52,18 +55,33 @@ const Signup = () => {
           confirmPassword: form.confirmPassword,
         };
 
-        console.log(form);
-        const response = await axios.post(
-          "http://localhost:5000/api/v1/auth/signup",
-          reqBody
-        );
-        console.log(response);
-        setForm(initialForm);
         setError(initialErrorForm);
+        const response = await axios.post("auth/signup", reqBody);
+        setForm(initialForm);
         setLoading(false);
+        toast.success(response.data.message, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          theme: "light",
+          transition: Slide,
+        });
+        navigate("/");
       } catch (error) {
-        console.log(error.message);
-        console.log(error.response.data);
+        console.log(error);
+        toast.info(error.response.data.message, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          theme: "light",
+          transition: Slide,
+        });
         setLoading(false);
       }
     }

@@ -1,3 +1,7 @@
+const isEmail = (value) => {
+    const regex = /^(?![^@]+@[^@]+\.[^@]+$).+$/;
+    return regex.test(value)
+}
 const signupValidator = ({ name, email, password, confirmPassword }) => {
     const errors = {
         name: "",
@@ -5,15 +9,17 @@ const signupValidator = ({ name, email, password, confirmPassword }) => {
         password: "",
         confirmPassword: ""
     }
-
     if (!name) {
         errors.name = "Name is required"
     } else if (name.length < 3) {
         errors.name = "Name length at least 3 char"
     }
 
+
     if (!email) {
         errors.email = "Email is required"
+    } else if (isEmail(email)) {
+        errors.email = "invalid email"
     }
 
     if (!password) {
@@ -27,7 +33,7 @@ const signupValidator = ({ name, email, password, confirmPassword }) => {
     } else if (confirmPassword.length < 6) {
         errors.confirmPassword = "Password length mus be 6 char"
     } else if (confirmPassword !== password) {
-        errors.confirmPassword = "Confirm password doestn match"
+        errors.confirmPassword = "Confirm password doesnt match"
     }
 
     return errors

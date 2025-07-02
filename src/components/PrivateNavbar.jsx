@@ -1,10 +1,5 @@
 import { Navigate, NavLink } from "react-router-dom";
-
 const PrivateNavbar = () => {
-  const auth = true;
-  if (!auth) {
-    return <Navigate to={"/login"} />;
-  }
   return (
     <nav>
       <NavLink to={"/"}>Home</NavLink>

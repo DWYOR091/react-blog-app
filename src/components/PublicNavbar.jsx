@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Navigate, NavLink } from "react-router-dom";
 
 const PublicNavbar = () => {
   return (

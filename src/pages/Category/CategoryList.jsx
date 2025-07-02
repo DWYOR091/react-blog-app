@@ -10,7 +10,7 @@ const CategoryList = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
-  const size = 3;
+  const size = 5;
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -53,6 +53,8 @@ const CategoryList = () => {
     }
   };
 
+  const numberStart = (currentPage - 1) * size;
+
   return (
     <div className="container mt-2">
       <button className="btn btn-primary my-3" onClick={handleNewCategory}>
@@ -71,6 +73,7 @@ const CategoryList = () => {
           <table className="table table-striped">
             <thead>
               <tr>
+                <th>No</th>
                 <th>Title</th>
                 <th>Description</th>
                 <th>CreatedAt</th>
@@ -79,8 +82,9 @@ const CategoryList = () => {
               </tr>
             </thead>
             <tbody>
-              {datas.map((data) => (
+              {datas.map((data, index) => (
                 <tr key={data._id}>
+                  <td>{numberStart + index + 1}</td>
                   <td>{data.title}</td>
                   <td>{data.description}</td>
                   <td>
@@ -98,25 +102,29 @@ const CategoryList = () => {
             </tbody>
           </table>
 
-          <div className="">
-            <button
-              className="btn btn-secondary"
-              onClick={handlePrev}
-              disabled={currentPage === 1}
-            >
-              Prev
-            </button>
-            <span className="mx-3">
-              Page {currentPage} of {totalPage}
-            </span>
-            <button
-              className="btn btn-secondary"
-              onClick={handleNext}
-              disabled={currentPage === totalPage}
-            >
-              Next
-            </button>
-          </div>
+          {totalPage > 0 ? (
+            <div className="">
+              <button
+                className="btn btn-secondary"
+                onClick={handlePrev}
+                disabled={currentPage === 1}
+              >
+                Prev
+              </button>
+              <span className="mx-3">
+                Page {currentPage} of {totalPage}
+              </span>
+              <button
+                className="btn btn-secondary"
+                onClick={handleNext}
+                disabled={currentPage === totalPage}
+              >
+                Next
+              </button>
+            </div>
+          ) : (
+            <p className="text-center fw-bold h4 mt-5">Data not found</p>
+          )}
         </>
       )}
     </div>

@@ -9,6 +9,7 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import { ToastContainer } from "react-toastify";
 import NewCategory from "./pages/Category/NewCategory";
+import UpdateCategory from "./pages/Category/UpdateCategory";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="categories" element={<CategoryList />} />
           <Route path="categories/newCategory" element={<NewCategory />} />
+          <Route path="categories/update/:id" element={<UpdateCategory />} />
           <Route path="posts" element={<PostList />} />
           <Route path="profile" element={<PostList />} />
           <Route path="setting" element={<Setting />} />

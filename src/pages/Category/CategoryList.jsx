@@ -94,7 +94,12 @@ const CategoryList = () => {
                     {moment(data.updatedAt).format("MMMM Do YYYY, h:mm:ss a")}
                   </td>
                   <td>
-                    <button className="btn btn-warning mx-2">Edit</button>
+                    <button
+                      className="btn btn-warning mx-2"
+                      onClick={() => navigate(`update/${data._id}`)}
+                    >
+                      Edit
+                    </button>
                     <button className="btn btn-danger">Delete</button>
                   </td>
                 </tr>

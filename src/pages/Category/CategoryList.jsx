@@ -3,8 +3,21 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import moment from "moment";
 import { Slide, toast } from "react-toastify";
+import { Button, Modal } from "react-bootstrap";
 
 const CategoryList = () => {
+  //boostrap
+  const [selectedIdCategory, setSelectedIdCategory] = useState(null);
+  const [show, setShow] = useState(false);
+  const handleClose = () => {
+    setShow(false);
+    setSelectedIdCategory(null);
+  };
+  const handleShow = (id) => {
+    setShow(true);
+    setSelectedIdCategory(id);
+  };
+
   const navigate = useNavigate();
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -29,15 +42,16 @@ const CategoryList = () => {
     }
   }, [currentPage, search]);
 
-  const handleDeleteCategory = async (id) => {
+  const handleDeleteCategory = async () => {
     try {
-      const res = await axiosInstance.delete(`category/${id}`);
+      const res = await axiosInstance.delete(`category/${selectedIdCategory}`);
       toast.success(res.data.message, {
         position: "top-right",
         autoClose: 2000,
         theme: "light",
         transition: Slide,
       });
+      handleClose();
       fetchCategories();
     } catch (error) {
       toast.success(error.response.data.message, {
@@ -123,7 +137,7 @@ const CategoryList = () => {
                     </button>
                     <button
                       className="btn btn-danger"
-                      onClick={() => handleDeleteCategory(data._id)}
+                      onClick={() => handleShow(data._id)}
                     >
                       Delete
                     </button>
@@ -158,6 +172,21 @@ const CategoryList = () => {
           )}
         </>
       )}
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Category</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure want to delete this category?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            No
+          </Button>
+          <Button variant="danger" onClick={() => handleDeleteCategory()}>
+            Yes
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

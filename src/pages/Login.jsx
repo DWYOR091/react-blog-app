@@ -108,8 +108,12 @@ const Login = () => {
           {error && <p className="text-danger">{error.password}</p>}
           <div className="form-group mt-3 text-center mt-3">
             {loading ? (
-              <button className="btn  btn-primary me-2 w-25" disabled>
-                logging ...
+              <button class="btn btn-primary" type="button" disabled>
+                <span
+                  class="spinner-border spinner-border-sm"
+                  aria-hidden="true"
+                ></span>
+                <span role="status"> Loggin...</span>
               </button>
             ) : (
               <button type="submit" className="btn  btn-primary me-2 w-25">

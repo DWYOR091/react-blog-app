@@ -8,35 +8,23 @@ import Setting from "./pages/Setting";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import { ToastContainer } from "react-toastify";
+import NewCategory from "./pages/Category/NewCategory";
 
 function App() {
   return (
     <>
       <Routes>
         <Route element={<PrivateLayout />}>
-          <Route path="/" element={<Home />}>
-            Home
-          </Route>
-          <Route path="categories" element={<CategoryList />}>
-            Categories
-          </Route>
-          <Route path="posts" element={<PostList />}>
-            Posts
-          </Route>
-          <Route path="profile" element={<PostList />}>
-            Profile
-          </Route>
-          <Route path="setting" element={<Setting />}>
-            Setting
-          </Route>
+          <Route path="/" element={<Home />} />
+          <Route path="categories" element={<CategoryList />} />
+          <Route path="categories/newCategory" element={<NewCategory />} />
+          <Route path="posts" element={<PostList />} />
+          <Route path="profile" element={<PostList />} />
+          <Route path="setting" element={<Setting />} />
         </Route>
         <Route element={<PublicLayout />}>
-          <Route path="/signup" element={<Signup />}>
-            Singup
-          </Route>
-          <Route path="/login" element={<Login />}>
-            Login
-          </Route>
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
         </Route>
       </Routes>
       <ToastContainer />

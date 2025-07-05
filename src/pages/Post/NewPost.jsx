@@ -20,6 +20,9 @@ const NewPost = () => {
   const [formData, setFormData] = useState(initialFormData);
   const [error, setError] = useState(initialError);
   const [selectCategory, setSelectCategory] = useState([]);
+  const [isEnable, setIsEnable] = useState(false);
+  const [idFile, setIdFile] = useState(null);
+  const [errorExtension, setErrorExtension] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,9 +37,52 @@ const NewPost = () => {
     getCategories();
   }, []);
 
+  const handleChangeFile = async (e) => {
+    //cek forminput
+    // for (const pair of formInput) {
+    //   console.log(`${pair[0]}: `, pair[1]);
+    // }
+    const file = e.target.files[0];
+
+    if (
+      file.type === "image/jpeg" ||
+      file.type === "image/png" ||
+      file.type === "image/jpg"
+    ) {
+      try {
+        setErrorExtension(null);
+        const formInput = new FormData();
+        formInput.append("image", file);
+        setIsEnable(true);
+        const response = await axiosInstance.post("file/upload", formInput, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        const data = response.data;
+        setIdFile(data.data.newFile._id);
+        toast.success(data.message, {
+          position: "top-right",
+          autoClose: 2000,
+          theme: "light",
+          transition: Slide,
+        });
+        setIsEnable(false);
+      } catch (error) {
+        toast.success(error.response.data.message, {
+          position: "top-right",
+          autoClose: 2000,
+          theme: "dark",
+          transition: Slide,
+        });
+      }
+    } else {
+      setErrorExtension("Just format png, jpeg, and jpg allowed");
+    }
+  };
+
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validator = newCategoryValidator(formData);
@@ -50,6 +96,7 @@ const NewPost = () => {
           title: formData.title,
           desc: formData.desc,
           category: formData.category,
+          file: idFile,
         };
         const response = await axiosInstance.post("post", reqBody);
         toast.success(response.data.message, {
@@ -59,7 +106,6 @@ const NewPost = () => {
           transition: Slide,
         });
         setFormData(initialFormData);
-        console.log(response);
         setLoading(false);
         navigate("/posts");
       } catch (error) {
@@ -128,6 +174,15 @@ const NewPost = () => {
               </textarea>
             </div>
             {error && <p className="text-danger">{error.description}</p>}
+            <div className="form-group mb-3">
+              <label htmlFor="">Image</label>
+              <input
+                type="file"
+                className="form-control"
+                onChange={handleChangeFile}
+              />
+            </div>
+            {errorExtension && <p className="text-danger">{errorExtension}</p>}
             <div className="form-group">
               <label htmlFor="" className="form-label">
                 Category
@@ -160,7 +215,11 @@ const NewPost = () => {
                   <span role="status"> saving...</span>
                 </button>
               ) : (
-                <button type="submit" className="btn btn-primary me-2">
+                <button
+                  type="submit"
+                  className="btn btn-primary me-2"
+                  disabled={isEnable}
+                >
                   Save
                 </button>
               )}

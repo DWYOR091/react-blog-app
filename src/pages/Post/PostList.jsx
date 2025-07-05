@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "../../utils/axiosInstance";
 import { useNavigate } from "react-router-dom";
-import langit from "../../assets/images/langit.png";
+// import langit from "../../assets/images/langit.png";
 
 const PostList = () => {
   const [posts, setPosts] = useState([]);
@@ -21,6 +21,7 @@ const PostList = () => {
         );
         setPosts(response.data.data.posts);
         setTotalPage(response.data.pages);
+        console.log(response.data.data.posts[5].file);
         setloading(false);
       } catch (error) {
         setloading(false);
@@ -66,7 +67,12 @@ const PostList = () => {
                   key={p._id}
                   onClick={() => navigate(`detailPost/${p._id}`)}
                 >
-                  <img src={langit} className="card-img-top" alt="..." />
+                  {console.log(p.file?.name || null)}
+                  <img
+                    src={`http://localhost:5000/image/${p.file?.name || null}`}
+                    className="card-img-top"
+                    alt="..."
+                  />
                   <div className="card-body">
                     <h5 className="card-title">{p.title}</h5>
                     <p className="card-text">{p.desc}</p>

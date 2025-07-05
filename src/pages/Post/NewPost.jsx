@@ -207,7 +207,7 @@ const NewPost = () => {
             </div>
             <div className="form-group mt-3">
               {loading ? (
-                <button class="btn btn-primary" type="button" disabled>
+                <button className="btn btn-primary" type="button" disabled>
                   <span
                     class="spinner-border spinner-border-sm"
                     aria-hidden="true"

@@ -1,0 +1,65 @@
+import { useNavigate, useParams } from "react-router-dom";
+import langit from "../../assets/images/langit.png";
+import { useEffect, useState } from "react";
+import axiosInstance from "../../utils/axiosInstance";
+import moment from "moment";
+
+const DetailPost = () => {
+  const { id } = useParams();
+  const [loading, setLoading] = useState(false);
+  const [post, setPost] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const getOnePost = async () => {
+      try {
+        setLoading(true);
+        const response = await axiosInstance.get(`post/${id}`);
+        // console.log(response.data.data.post);
+        setPost(response.data.data.post);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
+    };
+    getOnePost();
+  }, [id]);
+  return loading || !post ? (
+    <h1 className="mt-5 text-center">Loading ...</h1>
+  ) : (
+    <div className="container mt-4">
+      <button className="btn btn-secondary mb-3" onClick={() => navigate(-1)}>
+        Back
+      </button>
+      <button
+        className="d-block btn btn-primary"
+        onClick={() => navigate(`/posts/detailPost/updatePost/${id}`)}
+      >
+        Update
+      </button>
+      <div className="mx-5 mt-5">
+        <h1 className="text-center fw-bold text-decoration-underline">Title</h1>
+        <p className="fw-bold">Category: {post.category?.title || ""}</p>
+        <p className="fw-bold">
+          Created At: {moment(post.createdAt).subtract(10, "days").calendar()}
+        </p>
+        <p className="fw-bold">
+          Updated At: {moment(post.updatedAt).subtract(10, "days").calendar()}
+        </p>
+        <p>
+          {post.desc} Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          Dolorem minus harum, voluptatibus pariatur explicabo voluptates
+          perspiciatis expedita ratione rem, fugit temporibus sequi accusamus
+          obcaecati, consequatur molestiae amet quos asperiores culpa.
+          Reiciendis quas aspernatur perferendis doloremque! Quasi, nisi ipsa
+          quae iste veritatis numquam repellat nemo similique perferendis,
+          suscipit, minus earum dolor!
+        </p>
+        <img src={langit} alt="" className="img-fluid" />
+      </div>
+    </div>
+  );
+};
+
+export default DetailPost;

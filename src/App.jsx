@@ -11,6 +11,9 @@ import { ToastContainer } from "react-toastify";
 import NewCategory from "./pages/Category/NewCategory";
 import UpdateCategory from "./pages/Category/UpdateCategory";
 import Profile from "./pages/Profile";
+import NewPost from "./pages/Post/NewPost";
+import DetailPost from "./pages/Post/DetailPost";
+import UpdatePost from "./pages/Post/UpdatePost";
 
 function App() {
   return (
@@ -22,6 +25,12 @@ function App() {
           <Route path="categories/newCategory" element={<NewCategory />} />
           <Route path="categories/update/:id" element={<UpdateCategory />} />
           <Route path="posts" element={<PostList />} />
+          <Route path="posts/newPost" element={<NewPost />} />
+          <Route path="posts/detailPost/:id" element={<DetailPost />} />
+          <Route
+            path="posts/detailPost/updatePost/:id"
+            element={<UpdatePost />}
+          />
           <Route path="profile" element={<Profile />} />
           <Route path="setting" element={<Setting />} />
         </Route>

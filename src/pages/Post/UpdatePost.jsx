@@ -1,33 +1,30 @@
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import newCategoryValidator from "../../validators/newCategoryValidator";
+import axiosInstance from "../../utils/axiosInstance";
 import { useNavigate, useParams } from "react-router-dom";
 import { Slide, toast } from "react-toastify";
-import axiosInstance from "../../utils/axiosInstance";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 
-//mencoba pakai yup dan react hook form
-const schema = yup.object().shape({
-  title: yup.string().required("Title is required"),
-  desc: yup.string().required("Description is required"),
-  category: yup.string().required("Category is required"),
-});
+const initialFormData = {
+  title: "",
+  desc: "",
+  category: "",
+};
+const initialError = {
+  title: "",
+  desc: "",
+  category: "",
+};
 
 const UpdatePost = () => {
   const [loading, setLoading] = useState(false);
-  const [loadingPost, setLoadingPost] = useState(true);
+  const [formData, setFormData] = useState(initialFormData);
+  const [error, setError] = useState(initialError);
   const [selectCategory, setSelectCategory] = useState([]);
-  const { id } = useParams();
+  const [isEnable, setIsEnable] = useState(false);
+  const [idFile, setIdFile] = useState(null);
+  const [errorExtension, setErrorExtension] = useState(null);
   const navigate = useNavigate();
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
+  const { id } = useParams();
 
   useEffect(() => {
     const getCategories = async () => {
@@ -39,59 +36,120 @@ const UpdatePost = () => {
       }
     };
 
-    const getPost = async () => {
+    const getOnePost = async () => {
       try {
-        const response = await axiosInstance.get(`post/${id}`);
-        const post = response.data.data.post;
-        setValue("title", post.title);
-        setValue("desc", post.desc);
-        setValue("category", post.category?._id || "");
+        const res = await axiosInstance.get("post/" + id);
+        const post = res.data.data.post;
+        setFormData(post);
+        if (post.file) {
+          setIdFile(post.file._id);
+        }
       } catch (error) {
         console.log(error);
-      } finally {
-        setLoadingPost(false);
       }
     };
 
-    getPost();
     getCategories();
-  }, [id, setValue]);
+    getOnePost();
+  }, [id]);
+  const handleChangeFile = async (e) => {
+    //cek forminput
+    // for (const pair of formInput) {
+    //   console.log(`${pair[0]}: `, pair[1]);
+    // }
+    const file = e.target.files[0];
 
-  const onSubmit = async (data) => {
-    try {
-      setLoading(true);
-      const response = await axiosInstance.put("post", data);
-      toast.success(response.data.message, {
-        position: "top-right",
-        autoClose: 2000,
-        theme: "light",
-        transition: Slide,
-      });
-      navigate("/posts");
-    } catch (error) {
-      console.log(error);
-      const msg =
-        error.response?.data?.message || "Something went wrong during update";
-      toast.error(msg, {
-        position: "top-right",
-        autoClose: 2000,
-        theme: "light",
-        transition: Slide,
-      });
-    } finally {
-      setLoading(false);
+    if (
+      file.type === "image/jpeg" ||
+      file.type === "image/png" ||
+      file.type === "image/jpg"
+    ) {
+      try {
+        setErrorExtension(null);
+        const formInput = new FormData();
+        formInput.append("image", file);
+        setIsEnable(true);
+        if (idFile) {
+          await axiosInstance.delete("file/upload/" + idFile);
+        }
+        const response = await axiosInstance.post("file/upload", formInput, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        const data = response.data;
+        setIdFile(data.data.newFile._id);
+        toast.success(data.message, {
+          position: "top-right",
+          autoClose: 2000,
+          theme: "light",
+          transition: Slide,
+        });
+        setIsEnable(false);
+      } catch (error) {
+        toast.success(error.response.data.message, {
+          position: "top-right",
+          autoClose: 2000,
+          theme: "dark",
+          transition: Slide,
+        });
+      }
+    } else {
+      setErrorExtension("Just format png, jpeg, and jpg allowed");
     }
   };
 
-  if (loadingPost) {
-    return (
-      <div className="text-center mt-5">
-        <div className="spinner-border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    );
-  }
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const validator = newCategoryValidator(formData);
+    if (validator.title || validator.desc) {
+      setError(validator);
+    } else {
+      try {
+        setLoading(true);
+        setError(initialError);
+        const reqBody = {
+          title: formData.title,
+          desc: formData.desc,
+          category: formData.category,
+          file: idFile,
+        };
+        const response = await axiosInstance.put("post/" + id, reqBody);
+        toast.success(response.data.message, {
+          position: "top-right",
+          autoClose: 2000,
+          theme: "light",
+          transition: Slide,
+        });
+        setFormData(initialFormData);
+        setLoading(false);
+        navigate("/posts");
+      } catch (error) {
+        setLoading(false);
+        console.log(error.response.data);
+        if (error.response && error.response.data) {
+          const errors = error.response.data;
+          for (const key in errors) {
+            toast.error(errors[key], {
+              position: "top-right",
+              autoClose: 2000,
+              theme: "light",
+              transition: Slide,
+            });
+          }
+        } else {
+          toast.error(error.response?.data?.message || "Something went wrong", {
+            position: "top-right",
+            autoClose: 2000,
+            theme: "light",
+            transition: Slide,
+          });
+        }
+      }
+    }
+  };
 
   return (
     <div className="container mt-3 vh-100">
@@ -99,66 +157,88 @@ const UpdatePost = () => {
         Back
       </button>
       <div className="d-flex justify-content-center mt-5">
-        <form className="w-50" onSubmit={handleSubmit(onSubmit)}>
+        <form action="" className="w-50" onSubmit={handleSubmit}>
           <div className="border border-2 rounded-2 p-4 shadow-lg">
             <h2 className="text-center my-4 fw-bold h3">Update Post</h2>
-
-            {/* Title */}
-            <div className="form-group mb-3">
-              <label className="form-label">Title</label>
+            <div className="form-group">
+              <label htmlFor="" className="form-label">
+                Title
+              </label>
               <input
                 type="text"
+                name="title"
+                placeholder="hello world"
                 className="form-control"
-                placeholder="Hello world"
-                {...register("title")}
+                onChange={handleChange}
+                value={formData.title}
               />
-              {errors.title && (
-                <p className="text-danger">{errors.title.message}</p>
-              )}
             </div>
-
-            {/* Description */}
-            <div className="form-group mb-3">
-              <label className="form-label">Description</label>
+            {error && <p className="text-danger">{error.title}</p>}
+            <div className="form-group">
+              <label htmlFor="" className="form-label">
+                Description
+              </label>
               <textarea
+                name="desc"
+                id=""
+                value={formData.desc}
+                placeholder="bla bla bla ..."
                 className="form-control"
-                placeholder="Bla bla bla..."
+                cols={30}
                 rows={5}
-                {...register("desc")}
-              />
-              {errors.desc && (
-                <p className="text-danger">{errors.desc.message}</p>
-              )}
+                onChange={handleChange}
+              >
+                {formData.desc}
+              </textarea>
             </div>
-
-            {/* Category */}
+            {error && <p className="text-danger">{error.description}</p>}
             <div className="form-group mb-3">
-              <label className="form-label">Category</label>
-              <select className="form-select" {...register("category")}>
-                <option value="">Select Category</option>
-                {selectCategory.map((c) => (
-                  <option value={c._id} key={c._id}>
-                    {c.title}
-                  </option>
-                ))}
-              </select>
-              {errors.category && (
-                <p className="text-danger">{errors.category.message}</p>
-              )}
+              <label htmlFor="">Image</label>
+              <input
+                type="file"
+                className="form-control"
+                onChange={handleChangeFile}
+              />
             </div>
-
-            {/* Submit */}
+            {errorExtension && <p className="text-danger">{errorExtension}</p>}
+            <div className="form-group">
+              <label htmlFor="" className="form-label">
+                Category
+              </label>
+              <select
+                name="category"
+                id=""
+                className="form-select"
+                onChange={handleChange}
+                value={formData.category}
+              >
+                <option disabled value={""}>
+                  Select Category
+                </option>
+                {selectCategory.map((c) => {
+                  return (
+                    <option value={c._id} key={c._id}>
+                      {c.title}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
             <div className="form-group mt-3">
               {loading ? (
                 <button className="btn btn-primary" type="button" disabled>
                   <span
-                    className="spinner-border spinner-border-sm"
+                    class="spinner-border spinner-border-sm"
                     aria-hidden="true"
                   ></span>
                   <span role="status"> saving...</span>
                 </button>
               ) : (
-                <button type="submit" className="btn btn-primary me-2">
+                <button
+                  type="submit"
+                  className="btn btn-primary me-2"
+                  disabled={isEnable}
+                >
                   Save
                 </button>
               )}
@@ -169,5 +249,4 @@ const UpdatePost = () => {
     </div>
   );
 };
-
 export default UpdatePost;

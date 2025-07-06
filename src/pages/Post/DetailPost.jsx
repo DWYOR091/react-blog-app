@@ -39,7 +39,9 @@ const DetailPost = () => {
         Update
       </button>
       <div className="mx-5 mt-5">
-        <h1 className="text-center fw-bold text-decoration-underline">Title</h1>
+        <h1 className="text-center fw-bold text-decoration-underline">
+          {post.title}
+        </h1>
         <p className="fw-bold">Category: {post.category?.title || ""}</p>
         <p className="fw-bold">
           Created At: {moment(post.createdAt).subtract(10, "days").calendar()}
@@ -56,7 +58,13 @@ const DetailPost = () => {
           quae iste veritatis numquam repellat nemo similique perferendis,
           suscipit, minus earum dolor!
         </p>
-        <img src={langit} alt="" className="img-fluid" />
+        <img
+          src={
+            post.file ? `http://localhost:5000/image/${post.file.name}` : langit
+          }
+          alt=""
+          className="img-fluid"
+        />
       </div>
     </div>
   );

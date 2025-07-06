@@ -3,12 +3,36 @@ import langit from "../../assets/images/langit.png";
 import { useEffect, useState } from "react";
 import axiosInstance from "../../utils/axiosInstance";
 import moment from "moment";
+import { Button, Modal } from "react-bootstrap";
+import { Slide, toast } from "react-toastify";
 
 const DetailPost = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const [post, setPost] = useState(null);
   const navigate = useNavigate();
+  const [show, setShow] = useState(false);
+  //modal
+  const handleClose = () => {
+    setShow(false);
+  };
+  const handleShow = () => {
+    setShow(true);
+  };
+  const handleDeletePost = async () => {
+    try {
+      const res = await axiosInstance.delete("post/" + id);
+      toast.success(res.data.message, {
+        position: "top-right",
+        autoClose: 2000,
+        theme: "light",
+        transition: Slide,
+      });
+      navigate("/posts");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     const getOnePost = async () => {
@@ -38,6 +62,9 @@ const DetailPost = () => {
       >
         Update
       </button>
+      <button className="d-block btn btn-danger mt-3" onClick={handleShow}>
+        Delete
+      </button>
       <div className="mx-5 mt-5">
         <h1 className="text-center fw-bold text-decoration-underline">
           {post.title}
@@ -66,6 +93,20 @@ const DetailPost = () => {
           className="img-fluid"
         />
       </div>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Post</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure want to delete this post?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            No
+          </Button>
+          <Button variant="danger" onClick={() => handleDeletePost()}>
+            Yes
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

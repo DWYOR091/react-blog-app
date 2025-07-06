@@ -125,7 +125,7 @@ const UpdatePost = () => {
         });
         setFormData(initialFormData);
         setLoading(false);
-        navigate("/posts");
+        navigate("/posts/detailPost/" + id);
       } catch (error) {
         setLoading(false);
         console.log(error.response.data);

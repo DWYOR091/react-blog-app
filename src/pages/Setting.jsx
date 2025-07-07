@@ -2,6 +2,8 @@ import { Slide, toast } from "react-toastify";
 import axiosInstance from "../utils/axiosInstance";
 import { useState } from "react";
 import changePassword from "../validators/changePassword";
+import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const initialForm = {
   oldPassword: "",
@@ -17,6 +19,8 @@ const Setting = () => {
   const [formData, setFormData] = useState(initialForm);
   const [error, setError] = useState(initialErrorForm);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const user = useAuth();
 
   //handle change
   const handleChange = (e) => {
@@ -64,59 +68,71 @@ const Setting = () => {
   };
 
   return (
-    <div
-      className="container d-flex justify-content-center align-items-center"
-      style={{ height: "31em" }}
-    >
-      <form action="" className="w-50" onSubmit={handleSubmit}>
-        <div className="border border-2 rounded-2 p-4 shadow-lg">
-          <h2 className="text-center my-4">Change Password</h2>
-          <div className="form-group">
-            <label htmlFor="" className="form-label">
-              Password
-            </label>
-            <input
-              type="password"
-              name="oldPassword"
-              placeholder="*****"
-              className="form-control"
-              onChange={handleChange}
-              value={formData.oldPassword}
-            />
+    <>
+      {user.isVerify ? (
+        ""
+      ) : (
+        <button
+          className="btn btn-primary mt-3 ms-5"
+          onClick={() => navigate("/verify-user")}
+        >
+          Verify User
+        </button>
+      )}
+      <div
+        className="container d-flex justify-content-center align-items-center"
+        style={{ height: "31em" }}
+      >
+        <form action="" className="w-50" onSubmit={handleSubmit}>
+          <div className="border border-2 rounded-2 p-4 shadow-lg">
+            <h2 className="text-center my-4">Change Password</h2>
+            <div className="form-group">
+              <label htmlFor="" className="form-label">
+                Password
+              </label>
+              <input
+                type="password"
+                name="oldPassword"
+                placeholder="*****"
+                className="form-control"
+                onChange={handleChange}
+                value={formData.oldPassword}
+              />
+            </div>
+            {error && <p className="text-danger">{error.oldPassword}</p>}
+            <div className="form-group">
+              <label htmlFor="" className="form-label">
+                New Password
+              </label>
+              <input
+                type="password"
+                name="newPassword"
+                placeholder="*****"
+                className="form-control"
+                onChange={handleChange}
+                value={formData.newPassword}
+              />
+            </div>
+            {error && <p className="text-danger">{error.newPassword}</p>}
+            <div className="form-group mt-3 text-center mt-3">
+              {loading ? (
+                <button class="btn btn-primary" type="button" disabled>
+                  <span
+                    class="spinner-border spinner-border-sm"
+                    aria-hidden="true"
+                  ></span>
+                  <span role="status"> updating...</span>
+                </button>
+              ) : (
+                <button type="submit" className="btn  btn-primary me-2 w-25">
+                  update
+                </button>
+              )}
+            </div>
           </div>
-          {error && <p className="text-danger">{error.oldPassword}</p>}
-          <div className="form-group">
-            <label htmlFor="" className="form-label">
-              New Password
-            </label>
-            <input
-              type="password"
-              name="newPassword"
-              placeholder="*****"
-              className="form-control"
-              onChange={handleChange}
-              value={formData.newPassword}
-            />
-          </div>
-          {error && <p className="text-danger">{error.newPassword}</p>}
-          <div className="form-group mt-3 text-center mt-3">
-            {loading ? (
-              <button class="btn btn-primary" type="button" disabled>
-                <span
-                  class="spinner-border spinner-border-sm"
-                  aria-hidden="true"
-                ></span>
-                <span role="status"> updating...</span>
-              </button>
-            ) : (
-              <button type="submit" className="btn  btn-primary me-2 w-25">
-                update
-              </button>
-            )}
-          </div>
-        </div>
-      </form>
-    </div>
+        </form>
+      </div>
+    </>
   );
 };
 

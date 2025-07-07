@@ -1,7 +1,9 @@
 import { Navigate, NavLink, useNavigate } from "react-router-dom";
 import { Slide, toast } from "react-toastify";
+import { useAuth } from "../contexts/AuthContext";
 const PrivateNavbar = () => {
   const navigate = useNavigate();
+  const user = useAuth();
   const logout = () => {
     window.localStorage.removeItem("blogData");
     toast.success("Logout successfully", {
@@ -16,11 +18,16 @@ const PrivateNavbar = () => {
     });
     navigate("/login");
   };
+
+  const admin = [1, 2];
+
   return (
     <nav>
       <NavLink to={"/"}>Home</NavLink>
-      <NavLink to={"/categories"}>Categories</NavLink>
       <NavLink to={"/posts"}>Posts</NavLink>
+      {admin.includes(user.role) && (
+        <NavLink to={"/categories"}>Categories</NavLink>
+      )}
       <NavLink to={"/profile"}>Profile</NavLink>
       <NavLink to={"/setting"}>Setting</NavLink>
       <NavLink

@@ -2,7 +2,7 @@ import { Slide, toast } from "react-toastify";
 import axios from "../utils/axiosInstance";
 import { useState } from "react";
 import loginValidator from "../validators/loginValidator";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const initialForm = {
   email: "",
@@ -106,6 +106,7 @@ const Login = () => {
             />
           </div>
           {error && <p className="text-danger">{error.password}</p>}
+          <Link to={"/forgot-password"}>Forgot Password</Link>
           <div className="form-group mt-3 text-center mt-3">
             {loading ? (
               <button class="btn btn-primary" type="button" disabled>

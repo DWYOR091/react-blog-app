@@ -4,6 +4,7 @@ const axiosInstance = axios.create({
         "Content-Type": "application/json"
     }
 })
+
 axiosInstance.interceptors.request.use((req) => {
     const stringifyBlogData = window.localStorage.getItem("blogData")
     if (stringifyBlogData) {
@@ -14,4 +15,5 @@ axiosInstance.interceptors.request.use((req) => {
     }
     return req
 })
+
 export default axiosInstance

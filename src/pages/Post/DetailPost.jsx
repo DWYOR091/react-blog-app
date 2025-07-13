@@ -5,6 +5,7 @@ import axiosInstance from "../../utils/axiosInstance";
 import moment from "moment";
 import { Button, Modal } from "react-bootstrap";
 import { Slide, toast } from "react-toastify";
+import { urlImage } from "../../utils/urlImage";
 
 const DetailPost = () => {
   const { id } = useParams();
@@ -86,9 +87,7 @@ const DetailPost = () => {
           suscipit, minus earum dolor!
         </p>
         <img
-          src={
-            post.file ? `http://localhost:5000/image/${post.file.name}` : langit
-          }
+          src={post.file ? `${urlImage(post.file.name)}` : langit}
           alt=""
           className="img-fluid"
         />

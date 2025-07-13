@@ -56,7 +56,7 @@ const Login = () => {
           transition: Slide,
         });
         setForm(initialForm);
-        navigate("/");
+        navigate("/", { replace: true });
       } catch (error) {
         setLoading(false);
         toast.error(error.response.data.message, {
@@ -109,9 +109,9 @@ const Login = () => {
           <Link to={"/forgot-password"}>Forgot Password</Link>
           <div className="form-group mt-3 text-center mt-3">
             {loading ? (
-              <button class="btn btn-primary" type="button" disabled>
+              <button className="btn btn-primary" type="button" disabled>
                 <span
-                  class="spinner-border spinner-border-sm"
+                  className="spinner-border spinner-border-sm"
                   aria-hidden="true"
                 ></span>
                 <span role="status"> Loggin...</span>

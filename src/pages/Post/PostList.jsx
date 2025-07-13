@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "../../utils/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import langit from "../../assets/images/langit.png";
-import { urlImage } from "../../utils/urlImage";
+// import { urlImage } from "../../utils/urlImage";
 
 const PostList = () => {
   const [posts, setPosts] = useState([]);
@@ -68,7 +68,7 @@ const PostList = () => {
                   onClick={() => navigate(`detailPost/${p._id}`)}
                 >
                   <img
-                    src={p.file ? urlImage(p.file.name) : langit}
+                    src={p.file?.url || langit}
                     className="card-img-top"
                     alt="..."
                     style={{ objectFit: "cover", height: "180px" }}

@@ -4,8 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [auth, setAuth] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [auth, setAuth] = useState(undefined);
   const navigate = useNavigate();
   const location = useLocation();
   useEffect(() => {
@@ -14,12 +13,11 @@ export const AuthProvider = ({ children }) => {
       const blogData = JSON.parse(stringifyBlogData);
       const user = blogData.user;
       setAuth(user);
-      setLoading(false);
     } else {
       setAuth(null);
-      setLoading(false);
     }
   }, [navigate, location]);
+
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 };
 

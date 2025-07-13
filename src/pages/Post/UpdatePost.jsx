@@ -207,10 +207,10 @@ const UpdatePost = () => {
               </label>
               <select
                 name="category"
-                id=""
                 className="form-select"
                 onChange={handleChange}
-                value={formData.category}
+                value={formData.category._id}
+                required
               >
                 <option disabled value={""}>
                   Select Category
@@ -228,7 +228,7 @@ const UpdatePost = () => {
               {loading ? (
                 <button className="btn btn-primary" type="button" disabled>
                   <span
-                    class="spinner-border spinner-border-sm"
+                    className="spinner-border spinner-border-sm"
                     aria-hidden="true"
                   ></span>
                   <span role="status"> saving...</span>

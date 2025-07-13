@@ -192,8 +192,9 @@ const NewPost = () => {
                 id=""
                 className="form-select"
                 onChange={handleChange}
+                value={formData.category}
               >
-                <option disabled selected>
+                <option disabled value={""}>
                   Select Category
                 </option>
                 {selectCategory.map((c) => {
@@ -209,7 +210,7 @@ const NewPost = () => {
               {loading ? (
                 <button className="btn btn-primary" type="button" disabled>
                   <span
-                    class="spinner-border spinner-border-sm"
+                    className="spinner-border spinner-border-sm"
                     aria-hidden="true"
                   ></span>
                   <span role="status"> saving...</span>

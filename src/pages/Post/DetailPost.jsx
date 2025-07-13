@@ -10,6 +10,7 @@ import { urlImage } from "../../utils/urlImage";
 const DetailPost = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
+  const [loadingDelete, setLoadingDelete] = useState(false);
   const [post, setPost] = useState(null);
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
@@ -22,6 +23,7 @@ const DetailPost = () => {
   };
   const handleDeletePost = async () => {
     try {
+      setLoadingDelete(true);
       const res = await axiosInstance.delete("post/" + id);
       toast.success(res.data.message, {
         position: "top-right",
@@ -30,7 +32,9 @@ const DetailPost = () => {
         transition: Slide,
       });
       navigate("/posts");
+      setLoadingDelete(false);
     } catch (error) {
+      setLoadingDelete(false);
       console.log(error);
     }
   };
@@ -86,11 +90,7 @@ const DetailPost = () => {
           quae iste veritatis numquam repellat nemo similique perferendis,
           suscipit, minus earum dolor!
         </p>
-        <img
-          src={post.file ? `${urlImage(post.file.name)}` : langit}
-          alt=""
-          className="img-fluid"
-        />
+        <img src={post.file?.url || langit} alt="" className="img-fluid" />
       </div>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -98,12 +98,24 @@ const DetailPost = () => {
         </Modal.Header>
         <Modal.Body>Are you sure want to delete this post?</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            No
-          </Button>
-          <Button variant="danger" onClick={() => handleDeletePost()}>
-            Yes
-          </Button>
+          {loadingDelete ? (
+            <button className="btn btn-danger" type="button" disabled>
+              <span
+                className="spinner-border spinner-border-sm"
+                aria-hidden="true"
+              ></span>
+              <span role="status"> deleting... </span>
+            </button>
+          ) : (
+            <>
+              <Button variant="secondary" onClick={handleClose}>
+                No
+              </Button>
+              <Button variant="danger" onClick={() => handleDeletePost()}>
+                Yes
+              </Button>
+            </>
+          )}
         </Modal.Footer>
       </Modal>
     </div>

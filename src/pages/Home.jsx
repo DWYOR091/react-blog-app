@@ -52,6 +52,8 @@ const Home = () => {
       ) : totalPage > 0 ? (
         <>
           <div className="mt-3 mb-3 d-flex flex-wrap justify-content-around">
+            {console.log(posts)}
+
             {posts.map((p) => {
               return (
                 <div
@@ -61,11 +63,7 @@ const Home = () => {
                   onClick={() => navigate(`/posts/detailPost/${p._id}`)}
                 >
                   <img
-                    src={
-                      p.file
-                        ? `http://localhost:5000/image/${p.file.name}`
-                        : langit
-                    }
+                    src={p.file?.url || langit}
                     className="card-img-top"
                     alt="..."
                     style={{ objectFit: "cover", height: "180px" }}

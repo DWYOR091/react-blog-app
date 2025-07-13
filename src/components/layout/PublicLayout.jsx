@@ -4,6 +4,7 @@ import { useAuth } from "../../contexts/AuthContext";
 
 const PublicLayout = () => {
   const auth = useAuth();
+
   if (auth) {
     return <Navigate to={"/"} />;
   }

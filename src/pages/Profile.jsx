@@ -88,7 +88,6 @@ const Profile = () => {
     };
     getCurrentUser();
   }, []);
-  console.log(form);
   return (
     <div
       className="container d-flex justify-content-center align-items-center"

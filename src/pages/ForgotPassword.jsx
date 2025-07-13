@@ -33,7 +33,6 @@ const ForgotPassword = () => {
           "http://localhost:5000/api/v1/auth/forgot-password",
           { email: formEmail.email }
         );
-        console.log(res);
         toast.success(res.data.message, {
           position: "top-right",
           autoClose: 2000,
@@ -79,7 +78,6 @@ const ForgotPassword = () => {
           transition: Slide,
         });
         setLoading(false);
-        console.log("Navigating to login...");
         navigate("/login");
       } catch (error) {
         setLoading(false);

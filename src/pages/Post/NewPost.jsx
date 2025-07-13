@@ -28,8 +28,9 @@ const NewPost = () => {
   useEffect(() => {
     const getCategories = async () => {
       try {
-        const response = await axiosInstance.get("category");
+        const response = await axiosInstance.get("category?size=100");
         setSelectCategory(response.data.data.categories);
+        console.log(response);
       } catch (error) {
         console.log(error);
       }
@@ -197,6 +198,7 @@ const NewPost = () => {
                 <option disabled value={""}>
                   Select Category
                 </option>
+                {console.log(selectCategory)}
                 {selectCategory.map((c) => {
                   return (
                     <option value={c._id} key={c._id}>

@@ -1,12 +1,31 @@
-# React + Vite
+<h1 align="center">REACT-BLOG-APP</h1>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<p align="center"><em>Empowering Creators, Inspiring Readers, Unleashing Ideas</em></p>
 
-Currently, two official plugins are available:
+<p align="center">
+  <img src="https://img.shields.io/badge/last%20commit-last%20sunday-brightgreen" />
+  <img src="https://img.shields.io/badge/javascript-96.1%25-yellow" />
+  <img src="https://img.shields.io/badge/languages-3-blue" />
+</p>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+<p align="center"><strong>Built with the tools and technologies:</strong></p>
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+<p align="center">
+  <img src="https://img.shields.io/badge/-JSON-black?logo=json&logoColor=white" />
+  <img src="https://img.shields.io/badge/-Markdown-black?logo=markdown" />
+  <img src="https://img.shields.io/badge/-npm-CB3837?logo=npm&logoColor=white" />
+  <img src="https://img.shields.io/badge/-JavaScript-F7DF1E?logo=javascript&logoColor=black" />
+  <img src="https://img.shields.io/badge/-React%20Bootstrap-61DAFB?logo=bootstrap" />
+  <img src="https://img.shields.io/badge/-React-61DAFB?logo=react" />
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/-Vite-646CFF?logo=vite&logoColor=white" />
+  <img src="https://img.shields.io/badge/-ESLint-4B32C3?logo=eslint&logoColor=white" />
+  <img src="https://img.shields.io/badge/-Axios-671DDF?logo=axios&logoColor=white" />
+  <img src="https://img.shields.io/badge/-Bootstrap-7952B3?logo=bootstrap" />
+  <img src="https://img.shields.io/badge/-React%20Hook%20Form-EC5990?logo=reacthookform&logoColor=white" />
+  <img src="https://img.shields.io/badge/-React%20Router-CA4245?logo=reactrouter&logoColor=white" />
+</p>

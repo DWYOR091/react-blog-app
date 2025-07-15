@@ -29,7 +29,7 @@ const UpdatePost = () => {
   useEffect(() => {
     const getCategories = async () => {
       try {
-        const response = await axiosInstance.get("category");
+        const response = await axiosInstance.get("category?size=100");
         setSelectCategory(response.data.data.categories);
       } catch (error) {
         console.log(error);

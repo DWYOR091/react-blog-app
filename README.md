@@ -26,6 +26,33 @@
   <img src="https://img.shields.io/badge/-ESLint-4B32C3?logo=eslint&logoColor=white" />
   <img src="https://img.shields.io/badge/-Axios-671DDF?logo=axios&logoColor=white" />
   <img src="https://img.shields.io/badge/-Bootstrap-7952B3?logo=bootstrap" />
-  <img src="https://img.shields.io/badge/-React%20Hook%20Form-EC5990?logo=reacthookform&logoColor=white" />
   <img src="https://img.shields.io/badge/-React%20Router-CA4245?logo=reactrouter&logoColor=white" />
 </p>
+
+## Getting Started
+This project requires the following dependencies:
+- **Programming Language**: Javascript
+- **Package Manager**: NPM
+
+## Installation 
+Build react-blog-app from the source and install dependencies:
+
+1) **Clone the repository**
+
+    ```cli
+    > git clone https://github.com/DWYOR091/react-blog-app.git
+    ```
+2) **Navigate to the project**
+    ```cli
+    > cd react-blog-app.git
+    ```
+3) **Install the dependencies**
+    ```cli
+    > npm install
+    ```
+## Usage
+Run the project using [npm](https://nodejs.org/en/download):
+```cli
+> npm run start
+```
+

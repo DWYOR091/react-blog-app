@@ -40,19 +40,19 @@ Build react-blog-app from the source and install dependencies:
 1) **Clone the repository**
 
     ```bash
-    > git clone https://github.com/DWYOR091/react-blog-app.git
+    git clone https://github.com/DWYOR091/react-blog-app.git
     ```
 2) **Navigate to the project**
     ```bash
-    > cd react-blog-app.git
+    cd react-blog-app.git
     ```
 3) **Install the dependencies**
     ```bash
-    > npm install
+    npm install
     ```
 ## Usage
 Run the project using [npm](https://nodejs.org/en/download):
 ```bash
-> npm run start
+npm run start
 ```
 
